@@ -1,0 +1,32 @@
+#!/usr/bin/perl -w
+use strict;
+#
+# Check Mac OSX CPU Statistics: 
+# Written by David Devers, 06/13/2011
+#
+
+#------------------------------------>
+# CONFIGURATION:
+#------------------------------------>
+#
+my $sshkey = '~zenoss/.ssh/id_rsa';
+my $sshuser = 'noc';
+
+
+#------------------------------------>
+# DO NOT EDIT BELOW THIS LINE!!!
+#------------------------------------>
+#
+my $host = $ARGV[0];
+my $sshcmd = "ssh $host -l $sshuser -i $sshkey -o StrictHostKeyChecking=no";
+
+# CPU Statistics:
+#
+my @cpuraw = split(' ', `$sshcmd 'top -l 1 | grep -i "Load Avg" | sed "s/%//g" | sed "s/,//g"'`);
+my $cpucount = `$sshcmd 'system_profiler SPHardwareDataType | grep "Cores:" | cut -d ":" -f 2 | sed "s/ //g"'`;
+my $cpustats = "sysLoad1=".$cpuraw[2]." sysLoad5=".$cpuraw[3]." sysLoad15=".$cpuraw[4]." cpuUsr=".$cpuraw[7]." cpuSys=".$cpuraw[9]." cpuIdle=".$cpuraw[11]." cpuCount=$cpucount";
+
+# Output:
+#
+print "OK|$cpustats";
+exit 0;

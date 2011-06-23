@@ -1,0 +1,955 @@
+<?xml version="1.0"?>
+<objects>
+<!-- ('', 'zport', 'dmd', 'Devices', 'Server', 'MacOSX') -->
+<object id='/zport/dmd/Devices/Server/MacOSX' module='Products.ZenModel.DeviceClass' class='DeviceClass'>
+<property id='zendoc' type='string'>
+Mac OS X Servers
+</property>
+<property type="string" id="description" mode="w" >
+Mac OS X Servers
+</property>
+<property visible="True" type="lines" id="zCollectorPlugins" >
+['zenoss.snmp.InterfaceMap', 'zenoss.snmp.RouteMap', 'zenoss.snmp.IpServiceMap', 'zenoss.snmp.HRFileSystemMap', 'zenoss.snmp.CpuMap', 'ddevers.ssh.macosx.systemProfilerHW', 'ddevers.ssh.macosx.systemProfilerSW']
+</property>
+<property visible="True" type="lines" id="zDeviceTemplates" >
+['CPU', 'Memory', 'ProcThreads']
+</property>
+<property visible="True" type="string" id="zFileSystemMapIgnoreNames" >
+^/.vol|^/dev|^/private/var/automount
+</property>
+<property visible="True" type="string" id="zKeyPath" >
+~/.ssh/id_rsa
+</property>
+<property visible="True" type="string" id="zIcon" >
+/zport/dmd/server-apple.png
+</property>
+<property visible="True" type="boolean" id="zIfDescription" >
+True
+</property>
+<property visible="True" type="string" id="zSnmpCommunity" >
+public
+</property>
+<property visible="True" type="lines" id="zSnmpCommunities" >
+['public']
+</property>
+<tomanycont id='rrdTemplates'>
+<object id='CPU' module='Products.ZenModel.RRDTemplate' class='RRDTemplate'>
+<property type="string" id="targetPythonClass" mode="w" >
+Products.ZenModel.Device
+</property>
+<tomanycont id='datasources'>
+<object id='CpuStats' module='Products.ZenModel.BasicDataSource' class='BasicDataSource'>
+<property select_variable="sourcetypes" type="selection" id="sourcetype" mode="w" >
+COMMAND
+</property>
+<property type="boolean" id="enabled" mode="w" >
+True
+</property>
+<property type="string" id="component" mode="w" >
+/Server/OSX/CPU
+</property>
+<property type="string" id="eventClass" mode="w" >
+/Cmd/Fail
+</property>
+<property type="string" id="eventKey" mode="w" >
+/Server/OSX/CPU
+</property>
+<property type="int" id="severity" mode="w" >
+3
+</property>
+<property type="string" id="commandTemplate" mode="w" >
+${here/ZenPackManager/packs/ZenPacks.ddevers.MacOSX/path}/libexec/check_macosx_cpu ${here/getId}
+</property>
+<property type="int" id="cycletime" mode="w" >
+300
+</property>
+<property type="boolean" id="usessh" mode="w" >
+False
+</property>
+<property type="string" id="parser" mode="w" >
+Auto
+</property>
+<tomanycont id='datapoints'>
+<object id='cpuCount' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+<object id='cpuIdle' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+<object id='cpuSys' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+<object id='cpuUsr' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+<object id='sysLoad1' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+<object id='sysLoad15' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+<object id='sysLoad5' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+</tomanycont>
+</object>
+</tomanycont>
+<tomanycont id='thresholds'>
+<object id='Min CPU Idle' module='Products.ZenModel.MinMaxThreshold' class='MinMaxThreshold'>
+<property label="DataPoints" type="lines" id="dsnames" mode="w" >
+['CpuStats_cpuIdle']
+</property>
+<property label="Enabled" type="boolean" id="enabled" mode="w" >
+True
+</property>
+<property type="string" id="minval" mode="w" >
+1
+</property>
+<property type="string" id="eventClass" mode="w" >
+/Perf/CPU
+</property>
+<property type="int" id="severity" mode="w" >
+4
+</property>
+<property type="int" id="escalateCount" mode="w" >
+2
+</property>
+</object>
+</tomanycont>
+<tomanycont id='graphDefs'>
+<object id='CPU Utilization' module='Products.ZenModel.GraphDefinition' class='GraphDefinition'>
+<property type="int" id="height" mode="w" >
+100
+</property>
+<property type="int" id="width" mode="w" >
+500
+</property>
+<property type="string" id="units" mode="w" >
+CPU - %
+</property>
+<property type="boolean" id="log" mode="w" >
+False
+</property>
+<property type="boolean" id="base" mode="w" >
+False
+</property>
+<property type="int" id="miny" mode="w" >
+0
+</property>
+<property type="int" id="maxy" mode="w" >
+100
+</property>
+<property type="text" id="custom" mode="w" >
+-P
+COMMENT:&lt;span bgcolor="black" color="white"&gt;          &lt;b&gt;CPU - %&lt;/b&gt;          &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="#555555" color="white"&gt;   Min\:   &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="#444444" color="white"&gt;   Avg\:   &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="#555555" color="white"&gt;   Max\:   &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="black" color="white"&gt;            Last\:    &lt;/span&gt;\c
+AREA:cpuSys#FF0000:&lt;span bgcolor="#FF0000" color="white"&gt;       System\:           &lt;/span&gt;\g:STACK
+GPRINT:cpuSys:MIN:&lt;span bgcolor="#AAAAAA"&gt;  %5.1lf%%  &lt;/span&gt;\g
+GPRINT:cpuSys:AVERAGE:&lt;span bgcolor="#BBBBBB"&gt;  %5.1lf%%  &lt;/span&gt;\g
+GPRINT:cpuSys:MAX:&lt;span bgcolor="#AAAAAA"&gt;  %5.1lf%%  &lt;/span&gt;\g
+GPRINT:cpuSys:LAST:&lt;span bgcolor="#FF0000" color="white"&gt;            %5.1lf%%   &lt;/span&gt;\c
+AREA:cpuUsr#1A3157:&lt;span bgcolor="#1A3157" color="white"&gt;         User\:           &lt;/span&gt;\g:STACK
+GPRINT:cpuUsr:MIN:&lt;span bgcolor="#AAAAAA"&gt;  %5.1lf%%  &lt;/span&gt;\g
+GPRINT:cpuUsr:AVERAGE:&lt;span bgcolor="#BBBBBB"&gt;  %5.1lf%%  &lt;/span&gt;\g
+GPRINT:cpuUsr:MAX:&lt;span bgcolor="#AAAAAA"&gt;  %5.1lf%%  &lt;/span&gt;\g
+GPRINT:cpuUsr:LAST:&lt;span bgcolor="#1A3157" color="white"&gt;            %5.1lf%%   &lt;/span&gt;\c
+AREA:cpuIdle#E6F1FF:&lt;span bgcolor="#E6F1FF"&gt;         Idle\:           &lt;/span&gt;\g:STACK
+GPRINT:cpuIdle:MIN:&lt;span bgcolor="#AAAAAA"&gt;  %5.1lf%%  &lt;/span&gt;\g
+GPRINT:cpuIdle:AVERAGE:&lt;span bgcolor="#BBBBBB"&gt;  %5.1lf%%  &lt;/span&gt;\g
+GPRINT:cpuIdle:MAX:&lt;span bgcolor="#AAAAAA"&gt;  %5.1lf%%  &lt;/span&gt;\g
+GPRINT:cpuIdle:LAST:&lt;span bgcolor="#E6F1FF"&gt;            %5.1lf%%   &lt;/span&gt;\c
+</property>
+<property type="boolean" id="hasSummary" mode="w" >
+False
+</property>
+<tomanycont id='graphPoints'>
+<object id='cpuIdle' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
+<property type="long" id="sequence" mode="w" >
+2
+</property>
+<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
+DONTDRAW
+</property>
+<property type="long" id="lineWidth" mode="w" >
+1
+</property>
+<property type="boolean" id="stacked" mode="w" >
+False
+</property>
+<property type="string" id="format" mode="w" >
+%5.2lf%s
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+<property type="long" id="limit" mode="w" >
+-1
+</property>
+<property type="string" id="dpName" mode="w" >
+CpuStats_cpuIdle
+</property>
+<property type="string" id="cFunc" mode="w" >
+AVERAGE
+</property>
+</object>
+<object id='cpuSys' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
+<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
+DONTDRAW
+</property>
+<property type="long" id="lineWidth" mode="w" >
+1
+</property>
+<property type="boolean" id="stacked" mode="w" >
+False
+</property>
+<property type="string" id="format" mode="w" >
+%5.2lf%s
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+<property type="long" id="limit" mode="w" >
+-1
+</property>
+<property type="string" id="dpName" mode="w" >
+CpuStats_cpuSys
+</property>
+<property type="string" id="cFunc" mode="w" >
+AVERAGE
+</property>
+</object>
+<object id='cpuUsr' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
+<property type="long" id="sequence" mode="w" >
+1
+</property>
+<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
+DONTDRAW
+</property>
+<property type="long" id="lineWidth" mode="w" >
+1
+</property>
+<property type="boolean" id="stacked" mode="w" >
+False
+</property>
+<property type="string" id="format" mode="w" >
+%5.2lf%s
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+<property type="long" id="limit" mode="w" >
+-1
+</property>
+<property type="string" id="dpName" mode="w" >
+CpuStats_cpuUsr
+</property>
+<property type="string" id="cFunc" mode="w" >
+AVERAGE
+</property>
+</object>
+</tomanycont>
+</object>
+<object id='Load Average' module='Products.ZenModel.GraphDefinition' class='GraphDefinition'>
+<property type="int" id="height" mode="w" >
+100
+</property>
+<property type="int" id="width" mode="w" >
+500
+</property>
+<property type="string" id="units" mode="w" >
+Load Average
+</property>
+<property type="boolean" id="log" mode="w" >
+False
+</property>
+<property type="boolean" id="base" mode="w" >
+False
+</property>
+<property type="int" id="miny" mode="w" >
+0
+</property>
+<property type="int" id="maxy" mode="w" >
+-1
+</property>
+<property type="text" id="custom" mode="w" >
+-P
+COMMENT:&lt;span bgcolor="black" color="white"&gt;           &lt;b&gt;Load&lt;/b&gt;             &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="#555555" color="white"&gt;   Min\:  &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="#444444" color="white"&gt;   Avg\:  &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="#555555" color="white"&gt;   Max\:  &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="black" color="white"&gt;              Last\:     &lt;/span&gt;\c
+LINE1:cpuCount#00FFE1::dashes
+LINE1:sysLoad1#FFDD00:&lt;span bgcolor="#F2F2CE"&gt;         1 Minute\:        &lt;/span&gt;\g
+GPRINT:sysLoad1:MIN:&lt;span bgcolor="#AAAAAA"&gt;  %5.2lf  &lt;/span&gt;\g
+GPRINT:sysLoad1:AVERAGE:&lt;span bgcolor="#BBBBBB"&gt;  %5.2lf  &lt;/span&gt;\g
+GPRINT:sysLoad1:MAX:&lt;span bgcolor="#AAAAAA"&gt;  %5.2lf  &lt;/span&gt;\g
+GPRINT:sysLoad1:LAST:&lt;span bgcolor="#F2F2CE"&gt;              %5.2lf     &lt;/span&gt;\c
+LINE1:sysLoad5#FF6600:&lt;span bgcolor="#FCCC83"&gt;         5 Minute\:        &lt;/span&gt;\g
+GPRINT:sysLoad5:MIN:&lt;span bgcolor="#AAAAAA"&gt;  %5.2lf  &lt;/span&gt;\g
+GPRINT:sysLoad5:AVERAGE:&lt;span bgcolor="#BBBBBB"&gt;  %5.2lf  &lt;/span&gt;\g
+GPRINT:sysLoad5:MAX:&lt;span bgcolor="#AAAAAA"&gt;  %5.2lf  &lt;/span&gt;\g
+GPRINT:sysLoad5:LAST:&lt;span bgcolor="#FCCC83"&gt;              %5.2lf     &lt;/span&gt;\c
+LINE1:sysLoad15#DD0000:&lt;span bgcolor="#FFABAB"&gt;        15 Minute\:        &lt;/span&gt;\g
+GPRINT:sysLoad15:MIN:&lt;span bgcolor="#AAAAAA"&gt;  %5.2lf  &lt;/span&gt;\g
+GPRINT:sysLoad15:AVERAGE:&lt;span bgcolor="#BBBBBB"&gt;  %5.2lf  &lt;/span&gt;\g
+GPRINT:sysLoad15:MAX:&lt;span bgcolor="#AAAAAA"&gt;  %5.2lf  &lt;/span&gt;\g
+GPRINT:sysLoad15:LAST:&lt;span bgcolor="#FFABAB"&gt;              %5.2lf     &lt;/span&gt;\c
+LINE:1
+</property>
+<property type="boolean" id="hasSummary" mode="w" >
+False
+</property>
+<property type="long" id="sequence" mode="w" >
+1
+</property>
+<tomanycont id='graphPoints'>
+<object id='cpuCount' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
+<property type="long" id="sequence" mode="w" >
+3
+</property>
+<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
+DONTDRAW
+</property>
+<property type="long" id="lineWidth" mode="w" >
+1
+</property>
+<property type="boolean" id="stacked" mode="w" >
+False
+</property>
+<property type="string" id="format" mode="w" >
+%5.2lf%s
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+<property type="long" id="limit" mode="w" >
+-1
+</property>
+<property type="string" id="dpName" mode="w" >
+CpuStats_cpuCount
+</property>
+<property type="string" id="cFunc" mode="w" >
+AVERAGE
+</property>
+</object>
+<object id='sysLoad1' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
+<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
+DONTDRAW
+</property>
+<property type="long" id="lineWidth" mode="w" >
+1
+</property>
+<property type="boolean" id="stacked" mode="w" >
+False
+</property>
+<property type="string" id="format" mode="w" >
+%5.2lf%s
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+<property type="long" id="limit" mode="w" >
+-1
+</property>
+<property type="string" id="dpName" mode="w" >
+CpuStats_sysLoad1
+</property>
+<property type="string" id="cFunc" mode="w" >
+AVERAGE
+</property>
+</object>
+<object id='sysLoad15' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
+<property type="long" id="sequence" mode="w" >
+2
+</property>
+<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
+DONTDRAW
+</property>
+<property type="long" id="lineWidth" mode="w" >
+1
+</property>
+<property type="boolean" id="stacked" mode="w" >
+False
+</property>
+<property type="string" id="format" mode="w" >
+%5.2lf%s
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+<property type="long" id="limit" mode="w" >
+-1
+</property>
+<property type="string" id="dpName" mode="w" >
+CpuStats_sysLoad15
+</property>
+<property type="string" id="cFunc" mode="w" >
+AVERAGE
+</property>
+</object>
+<object id='sysLoad5' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
+<property type="long" id="sequence" mode="w" >
+1
+</property>
+<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
+DONTDRAW
+</property>
+<property type="long" id="lineWidth" mode="w" >
+1
+</property>
+<property type="boolean" id="stacked" mode="w" >
+False
+</property>
+<property type="string" id="format" mode="w" >
+%5.2lf%s
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+<property type="long" id="limit" mode="w" >
+-1
+</property>
+<property type="string" id="dpName" mode="w" >
+CpuStats_sysLoad5
+</property>
+<property type="string" id="cFunc" mode="w" >
+AVERAGE
+</property>
+</object>
+</tomanycont>
+</object>
+</tomanycont>
+</object>
+<object id='Memory' module='Products.ZenModel.RRDTemplate' class='RRDTemplate'>
+<property type="string" id="targetPythonClass" mode="w" >
+Products.ZenModel.Device
+</property>
+<tomanycont id='datasources'>
+<object id='MemoryStats' module='Products.ZenModel.BasicDataSource' class='BasicDataSource'>
+<property select_variable="sourcetypes" type="selection" id="sourcetype" mode="w" >
+COMMAND
+</property>
+<property type="boolean" id="enabled" mode="w" >
+True
+</property>
+<property type="string" id="component" mode="w" >
+/Server/MacOSX/Memory
+</property>
+<property type="string" id="eventClass" mode="w" >
+/Cmd/Fail
+</property>
+<property type="string" id="eventKey" mode="w" >
+/Server/MacOSX/Memory
+</property>
+<property type="int" id="severity" mode="w" >
+3
+</property>
+<property type="string" id="commandTemplate" mode="w" >
+${here/ZenPackManager/packs/ZenPacks.ddevers.MacOSX/path}/libexec/check_macosx_memory ${here/getId}
+</property>
+<property type="int" id="cycletime" mode="w" >
+300
+</property>
+<property type="boolean" id="usessh" mode="w" >
+False
+</property>
+<property type="string" id="parser" mode="w" >
+Auto
+</property>
+<tomanycont id='datapoints'>
+<object id='memActive' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+<object id='memFree' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+<object id='memInactive' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+<object id='memPageIns' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+<object id='memPageOuts' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+<object id='memWiredDown' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+</tomanycont>
+</object>
+</tomanycont>
+<tomanycont id='thresholds'>
+<object id='Max Memory Utilization' module='Products.ZenModel.MinMaxThreshold' class='MinMaxThreshold'>
+<property label="DataPoints" type="lines" id="dsnames" mode="w" >
+['MemoryStats_memFree']
+</property>
+<property label="Enabled" type="boolean" id="enabled" mode="w" >
+True
+</property>
+<property type="string" id="minval" mode="w" >
+16777216
+</property>
+<property type="string" id="eventClass" mode="w" >
+/Perf/Memory
+</property>
+<property type="int" id="severity" mode="w" >
+4
+</property>
+<property type="int" id="escalateCount" mode="w" >
+3
+</property>
+</object>
+</tomanycont>
+<tomanycont id='graphDefs'>
+<object id='Memory Utilization' module='Products.ZenModel.GraphDefinition' class='GraphDefinition'>
+<property type="int" id="height" mode="w" >
+100
+</property>
+<property type="int" id="width" mode="w" >
+500
+</property>
+<property type="string" id="units" mode="w" >
+Memory - Bytes
+</property>
+<property type="boolean" id="log" mode="w" >
+False
+</property>
+<property type="boolean" id="base" mode="w" >
+True
+</property>
+<property type="int" id="miny" mode="w" >
+0
+</property>
+<property type="int" id="maxy" mode="w" >
+-1
+</property>
+<property type="text" id="custom" mode="w" >
+-P
+COMMENT:&lt;span bgcolor="black" color="white"&gt;      &lt;b&gt;Memory - Bytes&lt;/b&gt;        &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="#555555" color="white"&gt;   Min\:   &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="#444444" color="white"&gt;   Avg\:   &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="#555555" color="white"&gt;   Max\:   &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="black" color="white"&gt;           Last\:     &lt;/span&gt;\c
+AREA:memWiredDown#990000:&lt;span bgcolor="#990000" color="White"&gt;           System\:        &lt;/span&gt;\g:STACK
+GPRINT:memWiredDown:MIN:&lt;span bgcolor="#AAAAAA"&gt;  %5.1lf%sB &lt;/span&gt;\g
+GPRINT:memWiredDown:AVERAGE:&lt;span bgcolor="#BBBBBB"&gt;  %5.1lf%sB &lt;/span&gt;\g
+GPRINT:memWiredDown:MAX:&lt;span bgcolor="#AAAAAA"&gt;  %5.1lf%sB &lt;/span&gt;\g
+GPRINT:memWiredDown:LAST:&lt;span bgcolor="#990000" color="White"&gt;           %5.1lf%sB   &lt;/span&gt;\c
+AREA:memActive#FF0000:&lt;span bgcolor="#FF0000" color="white"&gt;           Active\:        &lt;/span&gt;\g:STACK
+GPRINT:memActive:MIN:&lt;span bgcolor="#AAAAAA"&gt;  %5.1lf%sB &lt;/span&gt;\g
+GPRINT:memActive:AVERAGE:&lt;span bgcolor="#BBBBBB"&gt;  %5.1lf%sB &lt;/span&gt;\g
+GPRINT:memActive:MAX:&lt;span bgcolor="#AAAAAA"&gt;  %5.1lf%sB &lt;/span&gt;\g
+GPRINT:memActive:LAST:&lt;span bgcolor="#FF0000" color="white"&gt;           %5.1lf%sB   &lt;/span&gt;\c
+AREA:memInactive#A4EBBE:&lt;span bgcolor="#A4EBBE"&gt;         Inactive\:        &lt;/span&gt;\g:STACK
+GPRINT:memInactive:MIN:&lt;span bgcolor="#AAAAAA"&gt;  %5.1lf%sB &lt;/span&gt;\g
+GPRINT:memInactive:AVERAGE:&lt;span bgcolor="#BBBBBB"&gt;  %5.1lf%sB &lt;/span&gt;\g
+GPRINT:memInactive:MAX:&lt;span bgcolor="#AAAAAA"&gt;  %5.1lf%sB &lt;/span&gt;\g
+GPRINT:memInactive:LAST:&lt;span bgcolor="#A4EBBE"&gt;           %5.1lf%sB   &lt;/span&gt;\c
+AREA:memFree#CBF5DA:&lt;span bgcolor="#CBF5DA"&gt;             Free\:        &lt;/span&gt;\g:STACK
+GPRINT:memFree:MIN:&lt;span bgcolor="#AAAAAA"&gt;  %5.1lf%sB &lt;/span&gt;\g
+GPRINT:memFree:AVERAGE:&lt;span bgcolor="#BBBBBB"&gt;  %5.1lf%sB &lt;/span&gt;\g
+GPRINT:memFree:MAX:&lt;span bgcolor="#AAAAAA"&gt;  %5.1lf%sB &lt;/span&gt;\g
+GPRINT:memFree:LAST:&lt;span bgcolor="#CBF5DA"&gt;           %5.1lf%sB   &lt;/span&gt;\c
+</property>
+<property type="boolean" id="hasSummary" mode="w" >
+False
+</property>
+<tomanycont id='graphPoints'>
+<object id='memActive' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
+<property type="long" id="sequence" mode="w" >
+1
+</property>
+<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
+DONTDRAW
+</property>
+<property type="long" id="lineWidth" mode="w" >
+1
+</property>
+<property type="boolean" id="stacked" mode="w" >
+False
+</property>
+<property type="string" id="format" mode="w" >
+%5.2lf%s
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+<property type="long" id="limit" mode="w" >
+-1
+</property>
+<property type="string" id="dpName" mode="w" >
+MemoryStats_memActive
+</property>
+<property type="string" id="cFunc" mode="w" >
+AVERAGE
+</property>
+</object>
+<object id='memFree' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
+<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
+DONTDRAW
+</property>
+<property type="long" id="lineWidth" mode="w" >
+1
+</property>
+<property type="boolean" id="stacked" mode="w" >
+False
+</property>
+<property type="string" id="format" mode="w" >
+%5.2lf%s
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+<property type="long" id="limit" mode="w" >
+-1
+</property>
+<property type="string" id="dpName" mode="w" >
+MemoryStats_memFree
+</property>
+<property type="string" id="cFunc" mode="w" >
+AVERAGE
+</property>
+</object>
+<object id='memInactive' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
+<property type="long" id="sequence" mode="w" >
+2
+</property>
+<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
+DONTDRAW
+</property>
+<property type="long" id="lineWidth" mode="w" >
+1
+</property>
+<property type="boolean" id="stacked" mode="w" >
+False
+</property>
+<property type="string" id="format" mode="w" >
+%5.2lf%s
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+<property type="long" id="limit" mode="w" >
+-1
+</property>
+<property type="string" id="dpName" mode="w" >
+MemoryStats_memInactive
+</property>
+<property type="string" id="cFunc" mode="w" >
+AVERAGE
+</property>
+</object>
+<object id='memWiredDown' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
+<property type="long" id="sequence" mode="w" >
+3
+</property>
+<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
+DONTDRAW
+</property>
+<property type="long" id="lineWidth" mode="w" >
+1
+</property>
+<property type="boolean" id="stacked" mode="w" >
+False
+</property>
+<property type="string" id="format" mode="w" >
+%5.2lf%s
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+<property type="long" id="limit" mode="w" >
+-1
+</property>
+<property type="string" id="dpName" mode="w" >
+MemoryStats_memWiredDown
+</property>
+<property type="string" id="cFunc" mode="w" >
+AVERAGE
+</property>
+</object>
+</tomanycont>
+</object>
+</tomanycont>
+</object>
+<object id='ProcThreads' module='Products.ZenModel.RRDTemplate' class='RRDTemplate'>
+<property type="string" id="targetPythonClass" mode="w" >
+Products.ZenModel.Device
+</property>
+<tomanycont id='datasources'>
+<object id='ProcStats' module='Products.ZenModel.BasicDataSource' class='BasicDataSource'>
+<property select_variable="sourcetypes" type="selection" id="sourcetype" mode="w" >
+COMMAND
+</property>
+<property type="boolean" id="enabled" mode="w" >
+True
+</property>
+<property type="string" id="component" mode="w" >
+/Server/OSX/Processes
+</property>
+<property type="string" id="eventClass" mode="w" >
+/Cmd/Fail
+</property>
+<property type="string" id="eventKey" mode="w" >
+/Server/OSX/Processes
+</property>
+<property type="int" id="severity" mode="w" >
+3
+</property>
+<property type="string" id="commandTemplate" mode="w" >
+${here/ZenPackManager/packs/ZenPacks.ddevers.MacOSX/path}/libexec/check_macosx_proc ${here/getId}
+</property>
+<property type="int" id="cycletime" mode="w" >
+300
+</property>
+<property type="boolean" id="usessh" mode="w" >
+False
+</property>
+<property type="string" id="parser" mode="w" >
+Auto
+</property>
+<tomanycont id='datapoints'>
+<object id='procRun' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+<object id='procSleep' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+<object id='procThreads' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+<object id='procTotal' module='Products.ZenModel.RRDDataPoint' class='RRDDataPoint'>
+<property select_variable="rrdtypes" type="selection" id="rrdtype" mode="w" >
+GAUGE
+</property>
+<property type="boolean" id="isrow" mode="w" >
+True
+</property>
+</object>
+</tomanycont>
+</object>
+</tomanycont>
+<tomanycont id='graphDefs'>
+<object id='Processes and Threads' module='Products.ZenModel.GraphDefinition' class='GraphDefinition'>
+<property type="int" id="height" mode="w" >
+100
+</property>
+<property type="int" id="width" mode="w" >
+500
+</property>
+<property type="string" id="units" mode="w" >
+Processes - #
+</property>
+<property type="boolean" id="log" mode="w" >
+False
+</property>
+<property type="boolean" id="base" mode="w" >
+False
+</property>
+<property type="int" id="miny" mode="w" >
+0
+</property>
+<property type="int" id="maxy" mode="w" >
+-1
+</property>
+<property type="text" id="custom" mode="w" >
+-P
+COMMENT:&lt;span bgcolor="black" color="white"&gt;      &lt;b&gt;Process - Count&lt;/b&gt;       &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="#555555" color="white"&gt;  Min\:  &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="#444444" color="white"&gt;  Avg\:  &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="#555555" color="white"&gt;  Max\:  &lt;/span&gt;\g
+COMMENT:&lt;span bgcolor="black" color="white"&gt;             Last\:     &lt;/span&gt;\c
+AREA:procRun#E00000:&lt;span bgcolor="#E00000" color="White"&gt;          Running\:        &lt;/span&gt;\g:STACK
+GPRINT:procRun:MIN:&lt;span bgcolor="#AAAAAA"&gt; %5.0lf%s &lt;/span&gt;\g
+GPRINT:procRun:AVERAGE:&lt;span bgcolor="#BBBBBB"&gt; %5.0lf%s &lt;/span&gt;\g
+GPRINT:procRun:MAX:&lt;span bgcolor="#AAAAAA"&gt; %5.0lf%s &lt;/span&gt;\g
+GPRINT:procRun:LAST:&lt;span bgcolor="#E00000" color="White"&gt;             %5.0lf%s    &lt;/span&gt;\c
+AREA:procSleep#81DEA3:&lt;span bgcolor="#81DEA3"&gt;         Sleeping\:        &lt;/span&gt;\g:STACK
+GPRINT:procSleep:MIN:&lt;span bgcolor="#AAAAAA"&gt; %5.0lf%s &lt;/span&gt;\g
+GPRINT:procSleep:AVERAGE:&lt;span bgcolor="#BBBBBB"&gt; %5.0lf%s &lt;/span&gt;\g
+GPRINT:procSleep:MAX:&lt;span bgcolor="#AAAAAA"&gt; %5.0lf%s &lt;/span&gt;\g
+GPRINT:procSleep:LAST:&lt;span bgcolor="#81DEA3"&gt;             %5.0lf%s    &lt;/span&gt;\c
+LINE1:procThreads#1A3157:&lt;span bgcolor="#1A3157" color="white"&gt;          Threads\:        &lt;/span&gt;\g
+GPRINT:procThreads:MIN:&lt;span bgcolor="#AAAAAA"&gt; %5.0lf%s &lt;/span&gt;\g
+GPRINT:procThreads:AVERAGE:&lt;span bgcolor="#BBBBBB"&gt; %5.0lf%s &lt;/span&gt;\g
+GPRINT:procThreads:MAX:&lt;span bgcolor="#AAAAAA"&gt; %5.0lf%s &lt;/span&gt;\g
+GPRINT:procThreads:LAST:&lt;span bgcolor="#1A3157" color="white"&gt;             %5.0lf%s    &lt;/span&gt;\c
+</property>
+<property type="boolean" id="hasSummary" mode="w" >
+False
+</property>
+<tomanycont id='graphPoints'>
+<object id='procRun' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
+<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
+DONTDRAW
+</property>
+<property type="long" id="lineWidth" mode="w" >
+1
+</property>
+<property type="boolean" id="stacked" mode="w" >
+False
+</property>
+<property type="string" id="format" mode="w" >
+%5.2lf%s
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+<property type="long" id="limit" mode="w" >
+-1
+</property>
+<property type="string" id="dpName" mode="w" >
+ProcStats_procRun
+</property>
+<property type="string" id="cFunc" mode="w" >
+AVERAGE
+</property>
+</object>
+<object id='procSleep' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
+<property type="long" id="sequence" mode="w" >
+1
+</property>
+<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
+DONTDRAW
+</property>
+<property type="long" id="lineWidth" mode="w" >
+1
+</property>
+<property type="boolean" id="stacked" mode="w" >
+False
+</property>
+<property type="string" id="format" mode="w" >
+%5.2lf%s
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+<property type="long" id="limit" mode="w" >
+-1
+</property>
+<property type="string" id="dpName" mode="w" >
+ProcStats_procSleep
+</property>
+<property type="string" id="cFunc" mode="w" >
+AVERAGE
+</property>
+</object>
+<object id='procThreads' module='Products.ZenModel.DataPointGraphPoint' class='DataPointGraphPoint'>
+<property type="long" id="sequence" mode="w" >
+2
+</property>
+<property select_variable="lineTypes" type="selection" id="lineType" mode="w" >
+DONTDRAW
+</property>
+<property type="long" id="lineWidth" mode="w" >
+1
+</property>
+<property type="boolean" id="stacked" mode="w" >
+False
+</property>
+<property type="string" id="format" mode="w" >
+%5.2lf%s
+</property>
+<property type="string" id="legend" mode="w" >
+${graphPoint/id}
+</property>
+<property type="long" id="limit" mode="w" >
+-1
+</property>
+<property type="string" id="dpName" mode="w" >
+ProcStats_procThreads
+</property>
+<property type="string" id="cFunc" mode="w" >
+AVERAGE
+</property>
+</object>
+</tomanycont>
+</object>
+</tomanycont>
+</object>
+</tomanycont>
+</object>
+</objects>

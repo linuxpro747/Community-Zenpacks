@@ -1,0 +1,34 @@
+#!/usr/bin/perl -w
+use strict;
+#
+# Check Mac OSX Memory Statistics: 
+# Written by David Devers, 06/13/2011
+#
+
+#------------------------------------>
+# CONFIGURATION:
+#------------------------------------>
+#
+my $sshkey = '~zenoss/.ssh/id_rsa';
+my $sshuser = 'noc';
+
+
+#------------------------------------>
+# DO NOT EDIT BELOW THIS LINE!!!
+#------------------------------------>
+#
+my $host = $ARGV[0];
+my $sshcmd = "ssh $host -l $sshuser -i $sshkey -o StrictHostKeyChecking=no";
+
+# Memory Statistics:
+#
+my @memraw = `$sshcmd 'vm_stat | sed "s/[ .]//g" | cut -d ":" -f 2'`;
+foreach (@memraw) { chomp($_); }
+$memraw[0] =~ /.*sizeof([0-9]*)byte.*/;
+my $bytes = $1;
+my $memstats = "memFree=".($memraw[1] * $bytes)." memActive=".($memraw[2] * $bytes)." memInactive=".($memraw[3] * $bytes)." memWiredDown=".($memraw[4] * $bytes)." memPageIns=".$memraw[9]." memPageOuts=".$memraw[10];
+
+# Output statistics:
+#
+print "OK|$memstats";
+exit 0;

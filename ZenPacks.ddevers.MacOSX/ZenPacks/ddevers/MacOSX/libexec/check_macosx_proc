@@ -1,0 +1,31 @@
+#!/usr/bin/perl -w
+use strict;
+#
+# Check Mac OSX Process Statistics: 
+# Written by David Devers, 06/13/2011
+#
+
+#------------------------------------>
+# CONFIGURATION:
+#------------------------------------>
+#
+my $sshkey = '~zenoss/.ssh/id_rsa';
+my $sshuser = 'noc';
+
+
+#------------------------------------>
+# DO NOT EDIT BELOW THIS LINE!!!
+#------------------------------------>
+#
+my $host = $ARGV[0];
+my $sshcmd = "ssh $host -l $sshuser -i $sshkey -o StrictHostKeyChecking=no";
+
+# Process Statistics:
+#
+my @procraw = split(' ', `$sshcmd 'top -l 1 | grep -i "Processes"'`);
+my $procstats = "procTotal=".$procraw[1]." procRun=".$procraw[3]." procSleep=".$procraw[5]." procThreads=".$procraw[7];
+
+# Output all statistics:
+#
+print "OK|$procstats";
+exit 0;
